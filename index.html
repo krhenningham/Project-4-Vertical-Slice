@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Don't Starve — Vertical Slice</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="gameContainer">
+  <canvas id="gameCanvas" width="800" height="600"></canvas>
+  <div id="instructions">Arrow keys / WASD to move. Walk into resources to gather. Stand near the fire pit and press E to build the fire.</div>
+</div>
+
+<!-- Load order matters: config first (no dependencies), then systems that
+     depend only on config, then systems that depend on those, then game.js
+     last since it wires everything together and starts the loop. -->
+<script src="js/config.js"></script>
+<script src="js/input.js"></script>
+<script src="js/player.js"></script>
+<script src="js/world.js"></script>
+<script src="js/resources.js"></script>
+<script src="js/fire.js"></script>
+<script src="js/monster.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
