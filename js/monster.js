@@ -7,6 +7,17 @@ window.Monster = {
   active: false,
   x: 0,
   y: 0,
+  sprite: null,
+  spriteLoaded: false,
+
+  init: function() {
+    // Create and load the image asset
+    this.sprite = new Image();
+    this.sprite.src = 'assets/dont_starve_zombie_gothic_exaggerated-removebg-preview.png';
+    this.sprite.onload = function() {
+      window.Monster.spriteLoaded = true;
+    };
+  },
 
   update: function (dt) {
     if (!this.active) {
@@ -49,16 +60,29 @@ window.Monster = {
   draw: function (ctx) {
     if (!this.active) return;
 
-    var size = window.CONFIG.MONSTER_SIZE;
-    ctx.fillStyle = window.CONFIG.COLOR_MONSTER;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, size / 2, 0, Math.PI * 2);
-    ctx.fill();
+    // Use a larger drawing scale so the creepy details are visible
+    var drawWidth = 64; 
+    var drawHeight = 84; 
 
-    ctx.fillStyle = "#ffffff";
-    ctx.beginPath();
-    ctx.arc(this.x - 5, this.y - 2, 2, 0, Math.PI * 2);
-    ctx.arc(this.x + 5, this.y - 2, 2, 0, Math.PI * 2);
-    ctx.fill();
+    if (this.spriteLoaded) {
+      // Draws the sprite centered on the monster's current coordinates
+      ctx.drawImage(
+        this.sprite, 
+        this.x - drawWidth / 2, 
+        this.y - drawHeight / 2, 
+        drawWidth, 
+        drawHeight
+      );
+    } else {
+      // Fallback placeholder circle just in case the image hasn't finished loading yet
+      var size = window.CONFIG.MONSTER_SIZE;
+      ctx.fillStyle = window.CONFIG.COLOR_MONSTER;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, size / 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
 };
+
+// Initialize the module to trigger image loading
+window.Monster.init();

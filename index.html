@@ -14,11 +14,11 @@
 <!-- Load order matters: config first (no dependencies), then systems that
      depend only on config, then systems that depend on those, then game.js
      last since it wires everything together and starts the loop. -->
+     
 <script src="js/config.js"></script>
 <script src="js/input.js"></script>
 <script src="js/player.js"></script>
-<script src="js/world.js"></script>
-<script src="js/resources.js"></script>
+<script src="js/world.js"></script><script src="js/resources.js"></script>
 <script src="js/fire.js"></script>
 <script src="js/monster.js"></script>
 <script src="js/ui.js"></script>
