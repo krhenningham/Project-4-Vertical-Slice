@@ -9,6 +9,23 @@ window.Player = {
   hunger: window.CONFIG.PLAYER_MAX_HUNGER,
   inventory: { wood: 0, grass: 0, flint: 0 },
   alive: true,
+  sprite: null,
+  spriteLoaded: false,
+
+  init: function() {
+    // Create and load the player character image asset
+    this.sprite = new Image();
+    this.sprite.src = 'assets/dont_starve_style_main_character_fixed-removebg-preview.png';
+    
+    this.sprite.onload = function() {
+      window.Player.spriteLoaded = true;
+      console.log("Player sprite loaded successfully!");
+    };
+
+    this.sprite.onerror = function() {
+      console.error("Failed to load player sprite at path: " + window.Player.sprite.src);
+    };
+  },
 
   update: function (dt) {
     if (!this.alive) return;
@@ -73,21 +90,37 @@ window.Player = {
     });
   },
 
-  // Basic placeholder sprite: a filled circle with a small direction-agnostic
-  // face. Swap this out for real sprite art later without touching any
-  // other file.
   draw: function (ctx) {
-    var size = window.CONFIG.PLAYER_SIZE;
+    // Custom visible dimensions for rendering the character sprite details clearly
+    var drawWidth = 56;
+    var drawHeight = 72;
 
-    ctx.fillStyle = window.CONFIG.COLOR_PLAYER;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, size / 2, 0, Math.PI * 2);
-    ctx.fill();
+    if (this.spriteLoaded) {
+      // Draws the character centered on the player coordinates
+      ctx.drawImage(
+        this.sprite,
+        this.x - drawWidth / 2,
+        this.y - drawHeight / 2,
+        drawWidth,
+        drawHeight
+      );
+    } else {
+      // Fallback placeholder code from your original file if the asset fails to load
+      var size = window.CONFIG.PLAYER_SIZE;
 
-    ctx.fillStyle = "#000000";
-    ctx.beginPath();
-    ctx.arc(this.x - 5, this.y - 3, 2, 0, Math.PI * 2);
-    ctx.arc(this.x + 5, this.y - 3, 2, 0, Math.PI * 2);
-    ctx.fill();
+      ctx.fillStyle = window.CONFIG.COLOR_PLAYER;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, size / 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#000000";
+      ctx.beginPath();
+      ctx.arc(this.x - 5, this.y - 3, 2, 0, Math.PI * 2);
+      ctx.arc(this.x + 5, this.y - 3, 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
 };
+
+// Trigger image preloading when player script initializes
+window.Player.init();
